@@ -157,9 +157,14 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                     Expanded(
                                       child: DropdownButtonFormField<String>(
-                                        hint:
-                                            Text('Select applicable tenant...'),
+                                        hint: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 10, 0, 0),
+                                          child: Text('Select tenant...'),
+                                        ),
                                         decoration: InputDecoration(
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.auto,
                                           icon: Icon(Icons.home),
                                           alignLabelWithHint: false,
                                           labelText: 'Tenant',

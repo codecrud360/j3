@@ -118,28 +118,30 @@ class _SetupCommunicationState extends State<SetupCommunication> {
                 ),
               ),
               //API tab content
-              Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 15,
-                  ),
-                  NormWid(name: 'Server Url', type: 'u'),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  NormWid(name: 'Username', type: 'u'),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  NormWid(name: 'New Password', type: 'p'),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  NormWid(name: 'Confirm Password', type: 'p'),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
+              SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 15,
+                    ),
+                    NormWid(name: 'Server Url', type: 'u'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    NormWid(name: 'Username', type: 'u'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    NormWid(name: 'New Password', type: 'p'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    NormWid(name: 'Confirm Password', type: 'p'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               )
             ],
           ),
