@@ -67,12 +67,13 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed("/screens/home");
+      Navigator.of(_ctx).pushReplacementNamed("/home");
   }
 
   String selected;
   @override
   Widget build(BuildContext context) {
+    _ctx = context;
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -157,14 +158,9 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                     Expanded(
                                       child: DropdownButtonFormField<String>(
-                                        hint: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 10, 0, 0),
-                                          child: Text('Select tenant...'),
-                                        ),
+                                        hint:
+                                            Text('Select applicable tenant...'),
                                         decoration: InputDecoration(
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.auto,
                                           icon: Icon(Icons.home),
                                           alignLabelWithHint: false,
                                           labelText: 'Tenant',
