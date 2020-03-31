@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen>
                                             _username = _value.trim(),
                                         validator: (_value) {
                                           return _value.length < 3
-                                              ? "Username must have at lease 4 charactor"
+                                              ? "Username must have at least 4 characters  "
                                               : null;
                                         },
                                         decoration: InputDecoration(
@@ -158,12 +158,17 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                     Expanded(
                                       child: DropdownButtonFormField<String>(
-                                        hint:
-                                            Text('Select applicable tenant...'),
+                                        hint: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 7, 0, 3),
+                                          child: Text('Select tenant...'),
+                                        ),
                                         decoration: InputDecoration(
                                           icon: Icon(Icons.home),
                                           alignLabelWithHint: false,
                                           labelText: 'Tenant',
+                                          contentPadding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
                                         ),
                                         value: selected,
                                         items: ["Host", "Admin", "Guest"]
