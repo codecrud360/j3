@@ -24,6 +24,10 @@
 ///         Author:    Perxis
 ///         License:   CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
 ///         Homepage:  https://linearicons.com
+/// * MFG Labs, Copyright (C) 2012 by Daniel Bruce
+///         Author:    MFG Labs
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.mfglabs.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -47,4 +51,5 @@ class CustomIcons {
   static const IconData eye = IconData(0xe80c, fontFamily: _kFontFam);
   static const IconData eye_off = IconData(0xe80d, fontFamily: _kFontFam);
   static const IconData pushpin = IconData(0xe832, fontFamily: _kFontFam);
+  static const IconData logout = IconData(0xf02d, fontFamily: _kFontFam);
 }
