@@ -158,25 +158,19 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                     Expanded(
                                       child: DropdownButtonFormField<String>(
-                                        hint: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 7, 0, 3),
-                                          child: Text('Select tenant...'),
-                                        ),
                                         decoration: InputDecoration(
                                           icon: Icon(Icons.home),
-                                          alignLabelWithHint: false,
                                           labelText: 'Tenant',
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
                                         ),
                                         value: selected,
                                         items: ["Host", "Admin", "Guest"]
-                                            .map((label) =>
-                                                DropdownMenuItem<String>(
-                                                  child: Text(label),
-                                                  value: label,
-                                                ))
+                                            .map(
+                                              (label) =>
+                                                  DropdownMenuItem<String>(
+                                                child: Text(label),
+                                                value: label,
+                                              ),
+                                            )
                                             .toList(),
                                         onChanged: (value) {
                                           setState(() {
