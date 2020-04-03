@@ -5,6 +5,7 @@ import 'package:j3enterprise/screens/communication/setup_communication.dart';
 import 'package:j3enterprise/screens/communication/server_setup.dart';
 import 'package:j3enterprise/shared/icons/custom_icons.dart';
 import 'package:j3enterprise/shared/utils/langcustomdialogbox.dart';
+import 'package:j3enterprise/shared/utils/logoutcustomdialogbox.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -121,6 +122,29 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 title: Text(
                   'Language',
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return LogoutCustomDialog();
+                    });
+              },
+              child: ListTile(
+                leading: Icon(
+                  CustomIcons.logout,
+                  color: Colors.blue,
+                ),
+                title: Text(
+                  'Logout',
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LangCustomDialog extends StatelessWidget {
+class LogoutCustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -36,7 +36,7 @@ class LangCustomDialog extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 18.0, left: 15),
                 child: Text(
-                  "Language",
+                  "Logout",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -47,7 +47,10 @@ class LangCustomDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            DropWid('English'),
+            Text(
+              'Are you sure you want to logout?',
+              style: TextStyle(fontSize: 20.0),
+            ),
             SizedBox(height: 30.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -99,54 +102,6 @@ class LangCustomDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16.0),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DropWid extends StatefulWidget {
-  final String list;
-
-  DropWid(this.list);
-
-  @override
-  _DropWidState createState() => _DropWidState();
-}
-
-class _DropWidState extends State<DropWid> {
-  String selecteditem;
-
-  @override
-  void initState() {
-    super.initState();
-    selecteditem = widget.list;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: DropdownButton(
-          isExpanded: true,
-          onChanged: (value) {
-            setState(() {
-              selecteditem = value;
-            });
-          },
-          value: selecteditem,
-          items: [
-            DropdownMenuItem(
-              child: Text('French'),
-              value: 'French',
-            ),
-            DropdownMenuItem(
-              child: Text(widget.list),
-              value: widget.list,
-            )
           ],
         ),
       ),
