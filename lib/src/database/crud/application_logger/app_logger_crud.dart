@@ -1,4 +1,3 @@
-import 'package:j3enterprise/src/database/crud/user/user_crud.dart';
 import 'package:j3enterprise/src/database/moor_database.dart';
 import 'package:j3enterprise/src/models/application_logger_model.dart';
 import 'package:moor/moor.dart';
@@ -52,22 +51,28 @@ class ApplicationLoggerDao extends DatabaseAccessor<AppDatabase>
     return (delete(db.applicationLogger)..where((t) => t.id.equals(id))).go();
   }
 
-  Future deleteAfterNumberOfDays(int id) {
-    return (delete(db.applicationLogger)..where((t) => t.id.equals(id))).go();
-  }
-
-  Future<List<ApplicationLoggerData>> purgeData(int count) {
-    return customStatement(
-      'DELETE FROM application_logger WHERE id in (SELECT id FROM application_logger ORDER BY log_date_time LIMIT $count)',
-    );
-  }
-
-  Future<List<ApplicationLoggerData>> purgeDatabyExportStatus(
-      String exportStatus) {
-    return customStatement(
-      'DELETE FROM application_logger WHERE export_status = $exportStatus)',
-    );
-  }
+//  Stream<List<ApplicationLoggerData>> purgeData(int limit) {
+//    return customSelectStream(
+//      'DELETE FROM application_logger WHERE id in (SELECT id FROM application_logger ORDER BY log_date_time LIMIT $limit);',
+//      readsFrom: {applicationLogger},
+//    ).map((rows) {
+//      return rows
+//          .map((row) => ApplicationLoggerData.fromData(row.data, db))
+//          .toList();
+//    });
+//  }
+//
+//  Stream<List<ApplicationLoggerData>> purgeDatabyExportStatus(
+//      String exportStatus) {
+//    return customSelectStream(
+//      'DELETE FROM application_logger WHERE export_status = $exportStatus);',
+//      readsFrom: {applicationLogger},
+//    ).map((rows) {
+//      return rows
+//          .map((row) => ApplicationLoggerData.fromData(row.data, db))
+//          .toList();
+//    });
+//  }
 
   Future deleteAppLog(ApplicationLoggerCompanion applicationLoggerCompanion) =>
       delete(applicationLogger).delete(applicationLoggerCompanion);

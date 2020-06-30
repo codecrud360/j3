@@ -1,3 +1,22 @@
+/*
+ * Jesseframework - Computer Expertz Ltd - https://cpxz.us
+ * Copyright (C) 2019-2021 Jesseframework
+ *
+ * This file is part of Jesseframework - https://github.com/jesseframework/j3.
+ *
+ * Jesseframework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version. 
+ *
+ * Jesseframework is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ */
+
 part of 'backgroundjobs_bloc.dart';
 
 abstract class BackgroundJobsState extends Equatable {
@@ -9,18 +28,6 @@ abstract class BackgroundJobsState extends Equatable {
 class BackgroundJobsUninitialized extends BackgroundJobsState {}
 
 class BackgroundJobsLoading extends BackgroundJobsState {}
-
-class BackgroundJobsLoaded extends BackgroundJobsState {
-  final Stream<List<BackgroundJobScheduleData>> data;
-
-  const BackgroundJobsLoaded({@required this.data});
-
-  @override
-  List<Object> get props => [data];
-
-  @override
-  String toString() => 'BackgroundJobsLoaded { data: ${data.length} }';
-}
 
 class BackgroundJobsSuccess extends BackgroundJobsState {
   //final BackgroundJobScheduleCompanion data;
@@ -34,10 +41,6 @@ class BackgroundJobsSuccess extends BackgroundJobsState {
   String toString() => 'BackgroundJobsSuccess { userMessage: $userMessage }';
 }
 
-class BackgroundJobsSendNotification extends BackgroundJobsState {}
-
-class BackgroundJobsStartState extends BackgroundJobsState {}
-
 class BackgroundJobsStoped extends BackgroundJobsState {
   final userMessage;
   const BackgroundJobsStoped({@required this.userMessage});
@@ -48,7 +51,7 @@ class BackgroundJobsStoped extends BackgroundJobsState {
   @override
   String toString() => 'BackgroundJobsSuccess { userMessage: $userMessage }';
 }
-class BackgroundJobsStop extends BackgroundJobsState {}
+
 
 class BackgroundJobsFailure extends BackgroundJobsState {
   final String error;

@@ -30,6 +30,7 @@ import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
   final UserRepository userRepository;
+  
 
   LoginPage({Key key, @required this.userRepository})
       : assert(userRepository != null),
@@ -39,11 +40,21 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalization.of(context).translate('app_title')),
+<<<<<<< HEAD
+        title: Text(AppLocalization.of(context).translate('app_title') ??
+            'J3 ENTERPRISE SOLUTION'),
+        backgroundColor: Colors.blue[800],
+=======
+        title: Text(AppLocalization.of(context).translate('app_title') ?? 'J3 ENTERPRISE SOLUTION'),
         backgroundColor: const Color(0xff5362b7),
+<<<<<<< HEAD
+>>>>>>> Applogger pages with 10 record
+=======
+>>>>>>> 3155339cff24631565403ae694c6e3af0e8966bb
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
       ),
       body: FirebaseMessageWrapper(
-               BlocProvider(
+        BlocProvider(
           create: (context) {
             return LoginBloc(
               authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),

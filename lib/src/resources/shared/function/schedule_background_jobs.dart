@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:j3enterprise/src/database/crud/backgroundjob/backgroundjob_schedule_crud.dart';
+import 'package:j3enterprise/src/database/moor_database.dart';
+import 'package:j3enterprise/src/resources/repositories/applogger_repositiry.dart';
+import 'package:logging/logging.dart';
 
 ///This code will allow user to set the frequency of code run in background job.
 ///Once enable dart timer will execute API call and updat date base base on timer.
@@ -12,16 +16,27 @@ class TimerData {
   TimerData({@required this.name, @required this.timer});
 }
 
+<<<<<<< HEAD
+class Scheduler {
+=======
+<<<<<<< HEAD
+class Scheduler {
+=======
 class Scheduleler {
-  //Timer timer;
+>>>>>>> 3155339cff24631565403ae694c6e3af0e8966bb
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
+  static final _log = Logger('Scheduleler');
+
   List<TimerData> timers = [];
 
   void cancel(String jobName) {
-    var x = timers.firstWhere((element) => element.name == jobName);
-    if (x != null) {
-      x.timer.cancel();
-      timers.remove(x);
-    }
+    try {
+      var x = timers.firstWhere((element) => element.name == jobName);
+      if (x != null) {
+        x.timer.cancel();
+        timers.remove(x);
+      }
+    } catch (error) {}
   }
 
   Duration _getFromString(String setFrequency) {
@@ -47,8 +62,106 @@ class Scheduleler {
 
     timers.add(new TimerData(
         name: jobName, timer: Timer.periodic(duration, callback)));
-    
+  }
+
+  Future<void> runNowJobs(
+      String setFrequency, String jobName, Function(Timer) callback) async {
+    var duration = _getFromString(setFrequency);
+    if (duration == null) return;
+
+    timers.add(
+        new TimerData(name: jobName, timer: Timer(duration, () => callback)));
+<<<<<<< HEAD
   }
 }
 
+Future<void> syncClickScheduler() async {
+=======
+  }
+}
 
+<<<<<<< HEAD
+Future<void> syncClickScheduler() async {
+=======
+Future<void> syncClickleScheduler() async {
+>>>>>>> 3155339cff24631565403ae694c6e3af0e8966bb
+  var db;
+  db = AppDatabase();
+  BackgroundJobScheduleDao backgroundJobScheduleDao =
+      new BackgroundJobScheduleDao(db);
+  AppLoggerRepository appLoggerRepository = new AppLoggerRepository();
+<<<<<<< HEAD
+  Scheduler scheduler = new Scheduler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+    if (eachJob.jobName == "Log Shipping") {
+      scheduler.runNowJobs(
+          eachJob.syncFrequency,
+          eachJob.jobName,
+          (Timer timer) async =>
+              await appLoggerRepository.putAppLogOnServer(eachJob.jobName));
+    }
+  }
+}
+
+=======
+  Scheduleler scheduleler = new Scheduleler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+    scheduleler.runNowJobs(
+        eachJob.syncFrequency,
+        eachJob.jobName,
+        (Timer timer) =>
+            appLoggerRepository.putAppLogOnServer(eachJob.jobName));
+
+            
+  }
+}
+
+>>>>>>> 3155339cff24631565403ae694c6e3af0e8966bb
+Future<void> syncClickCancel() async {
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
+  var db;
+  db = AppDatabase();
+  BackgroundJobScheduleDao backgroundJobScheduleDao =
+      new BackgroundJobScheduleDao(db);
+<<<<<<< HEAD
+  AppLoggerRepository appLoggerRepository = new AppLoggerRepository();
+  Scheduler scheduler = new Scheduler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+    if (eachJob.jobName == "Log Shipping") {
+      scheduler.runNowJobs(
+          eachJob.syncFrequency,
+          eachJob.jobName,
+          (Timer timer) async =>
+              await appLoggerRepository.putAppLogOnServer(eachJob.jobName));
+    }
+  }
+}
+
+Future<void> syncClickCancel() async {
+  var db;
+  db = AppDatabase();
+  BackgroundJobScheduleDao backgroundJobScheduleDao =
+      new BackgroundJobScheduleDao(db);
+
+  Scheduler scheduleler = new Scheduler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+=======
+
+<<<<<<< HEAD
+  Scheduler scheduleler = new Scheduler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+=======
+  Scheduleler scheduleler = new Scheduleler();
+  var jobData = await backgroundJobScheduleDao.getAllJobs();
+  for (var eachJob in jobData) {
+    
+>>>>>>> 3155339cff24631565403ae694c6e3af0e8966bb
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
+    scheduleler.cancel(eachJob.jobName);
+  }
+}

@@ -1,8 +1,10 @@
 import 'dart:io' show Platform;
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:j3enterprise/src/resources/services/background_fetch_service.dart';
 import 'package:j3enterprise/src/resources/services/init_services.dart';
 import 'package:j3enterprise/src/resources/shared/lang/appLocalization.dart';
 import 'package:j3enterprise/src/resources/shared/utils/routes.dart';
@@ -29,7 +31,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //InitServiceSetup initServiceSetup = new InitServiceSetup();
-  SharedPreferences.setMockInitialValues({});
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    SharedPreferences.setMockInitialValues({});
+  }
+
   await systemInitelSetup();
   //await initServiceSetup.setupLogging();
 
@@ -46,6 +51,9 @@ Future<void> main() async {
       ),
     ),
   );
+  if (Platform.isAndroid || Platform.isIOS) {
+    BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  }
 }
 
 class App extends StatelessWidget {

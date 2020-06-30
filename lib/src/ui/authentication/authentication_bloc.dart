@@ -21,7 +21,7 @@ class AuthenticationBloc
   UserHashSave userHash;
   AppLoggerRepository appLoggerRepository;
   BackgroundJobScheduleDao backgroundJobScheduleDao;
-  Scheduleler scheduleler;
+  Scheduler scheduleler;
 
   static final _log = Logger('LoginBloc');
 
@@ -32,7 +32,7 @@ class AuthenticationBloc
     userHash = new UserHashSave(userRepository: userRepository);
     appLoggerRepository = new AppLoggerRepository();
     backgroundJobScheduleDao = new BackgroundJobScheduleDao(db);
-    scheduleler = new Scheduleler();
+    scheduleler = new Scheduler();
   }
 
   @override
@@ -61,15 +61,15 @@ class AuthenticationBloc
 
       _log.finest('Starting background Jobs');
 
-      var jobData = await backgroundJobScheduleDao.getAllJobs();
-      for (var eachJob in jobData) {
-        scheduleler.scheduleJobs(
-            eachJob.syncFrequency,
-            eachJob.jobName,
-            (Timer timer) =>
-                appLoggerRepository.putAppLogOnServer(eachJob.jobName));
-        _log.finest('background Jobs start');
-      }
+      // var jobData = await backgroundJobScheduleDao.getAllJobs();
+      // for (var eachJob in jobData) {
+      //   scheduleler.scheduleJobs(
+      //       eachJob.syncFrequency,
+      //       eachJob.jobName,
+      //       (Timer timer) =>
+      //           appLoggerRepository.putAppLogOnServer(eachJob.jobName));
+      //   _log.finest('background Jobs start');
+      // }
 
       var offlineReady =
           await userFromServer.validateUser(event.userId, event.tenantId);

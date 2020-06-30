@@ -1,4 +1,28 @@
-import 'dart:async';
+/*
+ * Jesseframework - Computer Expertz Ltd - https://cpxz.us
+ * Copyright (C) 2019-2021 Jesseframework
+ *
+ * This file is part of Jesseframework - https://github.com/jesseframework/j3.
+ *
+ * Jesseframework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version. 
+ *
+ * Jesseframework is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Jesseframework.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * WARNING!! - Dont not add flutter logger to saveAppLog Future. This will put the apploger in loop and prevent loging.
+ */
+
+import 'dart:async' show Future;
 
 import 'package:j3enterprise/src/database/crud/application_logger/app_logger_crud.dart';
 import 'package:j3enterprise/src/database/crud/prefrence/non_preference_crud.dart';
@@ -14,13 +38,14 @@ class AppLogger {
   ApplicationLoggerDao applicationLoggerDao;
   AppLoggerRepository appLoggerRepository;
   PreferenceDao preferenceDao;
-  NonGlobalSettingDao nonGlobalSettingDao;
+  NonGlobalPreferenceDao nonGlobalPreferenceDao;
   UserSharedData userSharedData;
   Map<String, String> mapDevicePref = Map();
 
   LoginState loginState;
 
   var db;
+
   static final _log = Logger('AppLogger');
 
   AppLogger() {
@@ -28,7 +53,7 @@ class AppLogger {
     db = AppDatabase();
     applicationLoggerDao = ApplicationLoggerDao(db);
     preferenceDao = PreferenceDao(db);
-    nonGlobalSettingDao = NonGlobalSettingDao(db);
+    nonGlobalPreferenceDao = NonGlobalPreferenceDao(db);
     userSharedData = new UserSharedData();
     appLoggerRepository = new AppLoggerRepository();
   }
@@ -45,12 +70,10 @@ class AppLogger {
       String logCode,
       String logSeverity,
       int tenantId,
-      String uerName,
+      String userName,
       int userId) async {
     try {
       mapDevicePref = await userSharedData.getUserSharedPref();
-      String userName = mapDevicePref['userName'];
-      String deviceId = mapDevicePref['deviceID'];
       String screen = mapDevicePref['screen'];
 
       var logData = new ApplicationLoggerCompanion(
@@ -68,79 +91,76 @@ class AppLogger {
           tenantId: Value(tenantId),
           userId: Value(userId));
 
-      _log.info('Inserting logs to database');
+<<<<<<< HEAD
+<<<<<<< HEAD
+      //ToDo add delay start to future
+=======
+=======
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
+      //ToDo add dlay start to future
 
+>>>>>>> Add business rule
       await applicationLoggerDao.insertAppLog(logData);
 
       var logPurging = await preferenceDao.getSinglePreferences('LOGGERPURGE');
       if (logPurging != null) {
-        _log.info('log purge enable');
         if (logPurging.value == "After Upload") {
           if (logPurging.isGlobal == false) {
-            _log.info('After Upload log purger is enable for non global');
-            var globalData = await nonGlobalSettingDao.getSingleNonGlobalPref(
+            var globalData = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
                 logPurging.code, logPurging.code, userName, deviceId, screen);
             if (globalData != null) {
               if (globalData.expiredDateTime.isBefore(DateTime.now())) {
-                await applicationLoggerDao.purgeDatabyExportStatus('Success');
-                _log.info('After Upload logs deleted before expiration date');
+                //applicationLoggerDao.purgeDatabyExportStatus('Success');
               }
             }
           } else {
-            await applicationLoggerDao.purgeDatabyExportStatus('Success');
-            _log.info('After Upload global log purger successfull');
+            //applicationLoggerDao.purgeDatabyExportStatus('Success');
           }
         }
 
         if (logPurging.value == "Last 1000") {
           if (logPurging.isGlobal == false) {
-            var globalData = await nonGlobalSettingDao.getSingleNonGlobalPref(
+            var globalData = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
                 logPurging.code, logPurging.code, userName, deviceId, screen);
             if (globalData != null) {
               if (globalData.expiredDateTime.isBefore(DateTime.now())) {
-                _log.info('1000 log puge for non global setting');
-                await applicationLoggerDao.purgeData(1000);
+                //applicationLoggerDao.purgeData(1000);
               }
             }
           } else {
-            _log.info('1000 log puge for global setting');
-            await applicationLoggerDao.purgeData(1000);
+            //applicationLoggerDao.purgeData(1000);
           }
         }
 
         if (logPurging.value == "Last 500") {
           if (logPurging.isGlobal == false) {
-            var globalData = await nonGlobalSettingDao.getSingleNonGlobalPref(
+            var globalData = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
                 logPurging.code, logPurging.code, userName, deviceId, screen);
             if (globalData != null) {
-              _log.info('500 log puge for non global setting');
-              await applicationLoggerDao.purgeData(1000);
+              //applicationLoggerDao.purgeData(500);
             }
           } else {
-            _log.info('500 log puge for global setting');
-            await applicationLoggerDao.purgeData(1000);
+            //applicationLoggerDao.purgeData(500);
           }
         }
 
         if (logPurging.value == "Last 100") {
           if (logPurging.isGlobal == false) {
-            var globalData = await nonGlobalSettingDao.getSingleNonGlobalPref(
+            var globalData = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
                 logPurging.code, logPurging.code, userName, deviceId, screen);
             if (globalData != null) {
               if (globalData.expiredDateTime.isBefore(DateTime.now())) {
-                _log.info(
-                    '100 log puge for non global setting before expiration');
-                await applicationLoggerDao.purgeData(100);
+                //applicationLoggerDao.purgeData(100);
               }
             }
           } else {
-            _log.info('100 log puge for global setting');
-            await applicationLoggerDao.purgeData(100);
+            //applicationLoggerDao.purgeData(100);
           }
         }
       } else {
-        _log.info('log purge not enable using default log purge of 1000 logs');
-        await applicationLoggerDao.purgeData(1000);
+        //int count = 1000;
+
+        //applicationLoggerDao.purgeData(1000);
       }
     } catch (error) {
       _log.shout(error, StackTrace.current);

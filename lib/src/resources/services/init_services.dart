@@ -15,7 +15,7 @@ import 'package:logging/logging.dart';
 class InitServiceSetup {
   var db;
   PreferenceDao preferenceDao;
-  NonGlobalSettingDao nonGlobalSettingDao;
+  NonGlobalPreferenceDao nonGlobalPreferenceDao;
   UserSharedData userSharedData;
   AppLogger appLogger;
   Map<String, String> mapDevicePref = Map();
@@ -23,7 +23,7 @@ class InitServiceSetup {
     db = AppDatabase();
     appLogger = new AppLogger();
     preferenceDao = new PreferenceDao(db);
-    nonGlobalSettingDao = new NonGlobalSettingDao(db);
+    nonGlobalPreferenceDao = new NonGlobalPreferenceDao(db);
     userSharedData = new UserSharedData();
   }
   Future<void> setupLogging() async {
@@ -39,7 +39,7 @@ class InitServiceSetup {
           saveLogToDd.isGlobal == false &&
           (saveLogToDd.expiredDateTime.isBefore(DateTime.now()) ||
               saveLogToDd.expiredDateTime == null)) {
-        var nonGlobalDb = await nonGlobalSettingDao.getSingleNonGlobalPref(
+        var nonGlobalDb = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
             'LOGGERON', 'LOGGERON', userName, deviceID, screen);
         if (nonGlobalDb != null &&
             nonGlobalDb.value == "Yes" &&
@@ -47,7 +47,7 @@ class InitServiceSetup {
           //Set not global
           if (nonGlobalDb.expiredDateTime.isBefore(DateTime.now()) ||
               nonGlobalDb.expiredDateTime == null) {
-            var setLogLevel = await nonGlobalSettingDao.getSingleNonGlobalPref(
+            var setLogLevel = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
                 'LOGGERLEVEL', 'LOGGERLEVEL', userName, deviceID, screen);
             if (setLogLevel != null) {
               await logLevelCheck(setLogLevel.value);
@@ -63,15 +63,70 @@ class InitServiceSetup {
       }
     } else {
       //Set Default
-      Logger.root.level = Level.INFO;
+      Logger.root.level = Level.FINEST;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      Logger.root.level = Level.ALL;
+>>>>>>> Applogger pages with 10 record
+=======
+>>>>>>> Add business rule
+=======
+>>>>>>> d905bf68ae66d893fb1f9bea2fec24a0c63aaa81
     }
 
     Logger.root.onRecord.listen((rec) async {
       print(
           '${rec.loggerName} : ${rec.level.name}: ${rec.time.toIso8601String()} : ${rec.message} ');
 
-      await appLogger.saveAppLog(rec.loggerName, rec.time, "NA", rec.message,
-          "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+      String _functionName = rec.loggerName.toString();
+      var logHttp =
+          await preferenceDao.getSinglePreferences('HTTPLOGINGTOSERVER');
+      if (logHttp != null) {
+        if (logHttp.value == "Yes" &&
+            logHttp.isGlobal == false &&
+            logHttp.expiredDateTime.isBefore(DateTime.now())) {
+          var nonGlobalDb = await nonGlobalPreferenceDao.getSingleNonGlobalPref(
+              'HTTPLOGINGTOSERVER',
+              'HTTPLOGINGTOSERVER',
+              userName,
+              deviceID,
+              screen);
+          if (nonGlobalDb != null &&
+              nonGlobalDb.value == "Yes" &&
+              nonGlobalDb.isApply == true) {
+            if (_functionName == "Chopper") {
+              await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+                  rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+            } else {
+              await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+                  rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+            }
+          } else {
+            if (_functionName != "Chopper") {
+              await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+                  rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+            }
+          }
+        } else if (logHttp.value == "Yes" &&
+            logHttp.isGlobal == true &&
+            logHttp.expiredDateTime.isBefore(DateTime.now())) {
+          if (_functionName == "Chopper") {
+            await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+                rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+          }
+        } else {
+          if (_functionName != "Chopper") {
+            await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+                rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+          }
+        }
+      } else {
+        if (_functionName != "Chopper") {
+          await appLogger.saveAppLog(rec.loggerName, rec.time, "NA",
+              rec.message, "NA", "NA", "NA", rec.level.name, 0, "NA", 0);
+        }
+      }
     });
   }
 

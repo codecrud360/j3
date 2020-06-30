@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:j3enterprise/src/database/moor_database.dart';
 import 'package:j3enterprise/src/models/preference_model.dart';
 import 'package:moor/moor.dart';
@@ -30,5 +31,12 @@ class PreferenceDao extends DatabaseAccessor<AppDatabase>
   Future insertPreferences(PreferenceData preferenceData) =>
       into(db.preference).insert(preferenceData);
 
+  Future<void> createOrUpdatePref(PreferenceData pref) {    
+    return into(db.preference).insertOnConflictUpdate(pref);
+
+  }
+
+//  
+    
   Future deleteAllPreferences() => delete(db.preference).go();
 }
